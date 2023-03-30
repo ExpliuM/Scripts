@@ -1,0 +1,6 @@
+# Folder
+TOKENS/*
+TMP/*
+
+# Extensions
+.history
