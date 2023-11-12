@@ -1,6 +1,7 @@
 # Folder
 TOKENS/*
 TMP/*
+mac/brew/lists/*
 
 # Extensions
 .history
