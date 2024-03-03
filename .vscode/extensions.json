@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "ue.alphabetical-sorter",
+        "withfig.fig",
+        "visualstudioexptteam.vscodeintellicode",
+        "visualstudioexptteam.intellicode-api-usage-examples",
+        "foxundermoon.shell-format",
+        "richie5um2.vscode-sort-json",
+        "vscode-icons-team.vscode-icons",
+        "redhat.vscode-xml",
+        "redhat.vscode-yaml"
+    ]
+}
