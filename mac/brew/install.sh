@@ -1,38 +1,62 @@
 #!/bin/bash
 
-brew tap homebrew/cask
+# Install brew
+if ! command -v brew &>/dev/null; then
+    echo "Installing brew"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
+echo "Installing brew packages"
 # Declare an array of string with type
-declare -a apps=(
+declare -a packages=(
     "android-platform-tools"
+    "audacity"
+    "beyond-compare"
+    "boost"
+    "cmake"
+    "digikam"
+    "discord"
+    "dupeguru"
+    "entityx"
+    "fig"
+    "gimp"
+    "google-chrome"
     "googletest"
+    "grammarly"
+    "htop"
+    "logitech-g-hub"
+    "make"
+    "moonlight"
     "ninja"
     "nmap"
     "node"
+    "nvm"
+    "onedrive"
+    "openshot-video-editor"
     "pkg-config"
     "pnpm"
+    "powerlevel10k"
     "prettier"
     "python"
     "qt"
-    "sfml"
-    "yarn"
-)
-
-for app in ${apps[@]}; do
-    echo "installing ${app}"
-    brew install $app >/dev/null
-done
-
-declare -a cask_apps=(
-    "fig"
-    "gimp"
-    "logitech-g-hub"
     "rectangle"
+    "sfml"
+    "spdlog"
     "spotify"
+    "visual-studio-code"
+    "vlc"
+    "wget"
     "whatsapp"
+    "yarn"
+    "zsh"
 )
 
-for app in ${cask_apps[@]}; do
-    echo "installing ${app}"
-    brew install --cask $app >/dev/null
+for package in ${packages[@]}; do
+    isPackageInstalled=$(brew list $package 2>/dev/null)
+    if [[ ! -z "$isPackageInstalled" ]]; then
+        echo -e "\t${package} is already installed"
+        continue
+    fi
+    echo -e "\tinstalling ${package}"
+    brew install $package >/dev/null
 done
