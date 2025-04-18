@@ -3,5 +3,15 @@ TOKENS/*
 TMP/*
 mac/brew/lists/*
 
+# Logs
+**/logs
+**/*.log
+
+# Mac
+.DS_Store
+
+# Private data
+git/configuration.env
+
 # Extensions
 .history

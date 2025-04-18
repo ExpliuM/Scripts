@@ -1,0 +1,47 @@
+{
+    "tasks": [
+        {
+            "command": "./update-and-upgrade.sh",
+            "label": "Brew: update and upgrade",
+            "options": {
+                "cwd": "${workspaceFolder}/mac/brew"
+            },
+            "type": "shell"
+        },
+        {
+            "command": "./list.sh",
+            "label": "Brew: list",
+            "options": {
+                "cwd": "${workspaceFolder}/mac/brew"
+            },
+            "type": "shell"
+        },
+        {
+            "command": "./install.sh",
+            "label": "Brew: install",
+            "options": {
+                "cwd": "${workspaceFolder}/mac/brew"
+            },
+            "type": "shell"
+        },
+        {
+            "command": "source configuration.env && ./config.sh",
+            "label": "Git: config",
+            "options": {
+                "cwd": "${workspaceFolder}/git"
+            },
+            "type": "shell"
+        },
+        {
+            "command": "./test/bats/bin/bats test/test.bats",
+            "label": "Bats: test",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "type": "shell"
+        },
+    ],
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0"
+}

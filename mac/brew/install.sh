@@ -18,12 +18,14 @@ declare -a packages=(
     "discord"
     "dupeguru"
     "entityx"
-    "fig"
     "gimp"
     "google-chrome"
     "googletest"
     "grammarly"
     "htop"
+    "iterm2"
+    "jq"
+    "llvm"
     "logitech-g-hub"
     "make"
     "moonlight"
@@ -41,8 +43,12 @@ declare -a packages=(
     "qt"
     "rectangle"
     "sfml"
+    "shellcheck"
+    "shfmt"
     "spdlog"
     "spotify"
+    "tig"
+    "tig"
     "visual-studio-code"
     "vlc"
     "wget"
@@ -51,12 +57,12 @@ declare -a packages=(
     "zsh"
 )
 
-for package in ${packages[@]}; do
-    isPackageInstalled=$(brew list $package 2>/dev/null)
+for package in "${packages[@]}"; do
+    isPackageInstalled=$(brew list "$package" 2>/dev/null)
     if [[ ! -z "$isPackageInstalled" ]]; then
         echo -e "\t${package} is already installed"
         continue
     fi
     echo -e "\tinstalling ${package}"
-    brew install $package >/dev/null
+    brew install "$package" >/dev/null
 done

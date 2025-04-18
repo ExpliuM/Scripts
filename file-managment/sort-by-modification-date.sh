@@ -10,5 +10,5 @@ find "$dir" -type f -exec bash -c '
     targetSubDir="$2/$year/$month"
 
     mkdir -p "$targetSubDir"
-    mv "$file" "$targetSubDir/"
+    mv -vn "$file" "$targetSubDir/"
 ' bash {} "$dir" \;./
