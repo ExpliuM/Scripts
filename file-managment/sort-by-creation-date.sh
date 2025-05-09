@@ -29,6 +29,7 @@ args=("$@")
 dirFullPath=${args[0]}
 
 # Convert all the files to a files array
+# TODO: -maxdepth 1 - make it configurable
 while IFS= read -r file; do
     fileFullPaths+=("$file")
 done < <(find "$dirFullPath" -type f -maxdepth 1 | grep -v "$filesToExclude")
@@ -53,13 +54,17 @@ for fileFullPath in "${fileFullPaths[@]}"; do
     # Get content creation date
     creationDate=$(./get-content-creation-time.sh "$fileFullPath")
     echo "creationDate=$creationDate" >>"$LOG_FILE"
+    if [[ -z "${creationDate}" ]]; then
+        echo "Skipping move for file $fileFullPath cause creationDate=$creationDate" | tee -a "$LOG_FILE"
+        continue
+    fi
 
     # Parsing year and month of creation
     year=$(LC_TIME=en_US.UTF-8 gdate -d "$creationDate" +"%Y")
     month=$(LC_TIME=en_US.UTF-8 gdate -d "$creationDate" +"%m")
 
-    if [[ -z "${year}" || -z "${month}" ]]; then
-        echo "skipping move for file $fileFullPath cause year=$year, month=$month, creationDate=$creationDate" >>"$LOG_FILE"
+    if [[ -z "${creationDate}" || -z "${year}" || -z "${month}" ]]; then
+        echo "Skipping move for file $fileFullPath cause year=$year, month=$month, creationDate=$creationDate" | tee -a "$LOG_FILE"
         continue
     fi
 
@@ -76,6 +81,7 @@ for fileFullPath in "${fileFullPaths[@]}"; do
     fi
 
     # Moving the file
+    # if ["$fileFullPath" != "$targetDirFullPath"]:the
     mv -vn "$fileFullPath" "$targetDirFullPath/" >>"$LOG_FILE"
 done
 popd >/dev/null || exit # SCRIPT_DIR

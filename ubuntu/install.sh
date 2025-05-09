@@ -16,7 +16,7 @@ removeList=(
 )
 
 echo "Removing packages:"
-for package in "$removeList[@]"; do
+for package in "${removeList[@]}"; do
     echo -e "\tRemoving $package package"
     sudo apt-get remove -y $package
     echo -e "\tRemoved $package package"
@@ -73,7 +73,7 @@ installList=(
     # "zsh"
 )
 
-for package in ${installList[@]}; do
+for package in "${installList[@]}"; do
     isPackageInstalled=$(brew list $package 2>/dev/null)
     if [[ ! -z "$isPackageInstalled" ]]; then
         echo -e "\t${package} is already installed"
@@ -114,5 +114,3 @@ sudo docker run --init --sig-proxy=false --name nextcloud-aio-mastercontainer --
 
 sudo mkdir -p /mnt/downloads
 sudo mount -t cifs -o username=explium //alexsander-s-pc/downloads /mnt/downloads/
-
-63464dbe722cb2b57d05bb53f1b9200c3ea1a87a0a31fd3d

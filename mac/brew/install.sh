@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: seperate cask
+
 # Install brew
 if ! command -v brew &>/dev/null; then
     echo "Installing brew"
@@ -28,11 +30,10 @@ declare -a packages=(
     "llvm"
     "logitech-g-hub"
     "make"
-    "moonlight"
     "ninja"
     "nmap"
     "node"
-    "nvm"
+    "nvm" # should also set some configurations on the .zshrc file
     "onedrive"
     "openshot-video-editor"
     "pkg-config"
@@ -42,9 +43,11 @@ declare -a packages=(
     "python"
     "qt"
     "rectangle"
+    "rustdesk"
     "sfml"
     "shellcheck"
     "shfmt"
+    "smartmontools"
     "spdlog"
     "spotify"
     "tig"

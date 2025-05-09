@@ -44,27 +44,56 @@ function main {
     # echo "LOG_BY_FILE_FILE=$LOG_BY_FILE_FILE" >$LOG_FILE
     decodedDate=$(echo "$filename" | grep -oh -m 1 "[[:digit:]]\{8\}")
     echo "decodedDate=$decodedDate" >>"$LOG_FILE"
+
     parsedFileNameDate=$(LC_TIME=en_US.UTF-8 gdate -d "$decodedDate")
     echo "parsedFileNameDate=$parsedFileNameDate" >>"$LOG_FILE"
-    # from stat
+
+    # # from stat
     # statBirthDate=$(stat -f '%w' "$file")
+    # echo "statBirthDate=$statBirthDate" >>"$LOG_FILE"
+
     # statChangeDate=$(stat -f '%z' "$file")
+    # echo "statChangeDate=$statBirthDate" >>"$LOG_FILE"
+
     # statModifyDate=$(stat -f '%y' "$file")
+    # echo "statModifyDate=$statBirthDate" >>"$LOG_FILE"
 
-    # echo "date"
-    # date -r "$file"
+    # # echo "date"
+    # echo "date -r \"$file\"" >>"$LOG_FILE"
+    # date -r "$file" >>"$LOG_FILE"
 
-    # echo "mdls"
-    # mdls "$file"
+    # # echo "mdls"
+    # echo "mdls \"\$file\"" >>"$LOG_FILE"
+    # mdls "$file" >>"$LOG_FILE"
 
     # echo "exiftool"
-    # exiftool "$file"
+    echo "exiftool \"$file\"" >>"$LOG_FILE"
+    createDateFromExifToolPreFormat=$(exiftool "$file" -json | jq ".[0].CreateDate" | tr -d '"' | sed 's/:/-/1; s/:/-/1') >>"$LOG_FILE"
+    createDateFromExifTool=$(LC_TIME=en_US.UTF-8 gdate -d "$createDateFromExifToolPreFormat")
 
-    dates=("$parsedFileNameDate" "$statBirthDate" "$statChangeDate" "$statModifyDate")
+    createdDateFromExifToolPreFormat=$(exiftool "$file" -json | jq ".[0].DateCreated" | tr -d '"' | sed 's/:/-/1; s/:/-/1') >>"$LOG_FILE"
+    createdDateFromExifTool=$(LC_TIME=en_US.UTF-8 gdate -d "$createdDateFromExifToolPreFormat")
+
+    fileModifyDateExifToolPreFormat=$(exiftool "$file" -json | jq ".[0].FileModifyDate" | tr -d '"' | sed 's/:/-/1; s/:/-/1') >>"$LOG_FILE"
+    fileModifyDateExifTool=$(LC_TIME=en_US.UTF-8 gdate -d "$fileModifyDateExifToolPreFormat")
+
+    dates=("$parsedFileNameDate" "$statBirthDate" "$statChangeDate" "$statModifyDate" "$createDateFromExifTool" "$createdDateFromExifTool" "$fileModifyDateExifTool")
     echo "dates=${dates[*]}" >>"$LOG_FILE"
 
-    # Sort the array of dates and get the latest date
-    earliestDate=$(printf "%s\n" "${dates[@]}" | sort | tail -n 1)
+    # Find earliest date
+    for date in "${dates[@]}"; do
+        echo "date=$date" >>"$LOG_FILE"
+        epoch=$(LC_TIME=en_US.UTF-8 gdate -d "$date" +%s)
+        echo "epoch=$epoch" >>"$LOG_FILE"
+        if [[ -z "$earliestDate" || "$epoch" -lt "$earliest_epoch" ]]; then
+            earliestDate="$date"
+            earliest_epoch="$epoch"
+        fi
+
+        echo "earliestDate=$earliestDate" >>"$LOG_FILE"
+        echo "earliest_epoch=$earliest_epoch" >>"$LOG_FILE"
+    done
+
     echo "earliestDate=$earliestDate" >>"$LOG_FILE"
     echo "$earliestDate" # return value
 
